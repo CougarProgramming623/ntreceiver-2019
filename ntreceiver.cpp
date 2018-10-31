@@ -25,7 +25,7 @@ main(int argc, char **argv)
 {
 	std::shared_ptr<nt::NetworkTable> table = start_networktables();
 
-	sleep(5);	
+	sleep(3);	
 //	nt::NetworkTableEntry color = table.get()->GetEntry("color entry");
 	
 //	std::cout << "Hello world" << std::endl;
@@ -33,25 +33,29 @@ main(int argc, char **argv)
 	std::string saved = "invalid";
 
 	for (;;) {
+		if(table.get()->GetBoolean("shutdown", true)) {
+			system("sudo poweroff");
+		} else {
+				std::string currentColor = table.get()->GetString("color entry", "invalid color");
 
-		std::string currentColor = table.get()->GetString("color entry", "invalid color");
+				if(saved.compare(currentColor) != 0) {
+					std::cout << "COLOR CHANGE to " << currentColor << endl;//code to change color
+					system("echo stop > /sys/class/remoteproc/remoteproc1/state");
+					if(currentColor.compare("red") == 0) {
+						system("echo red.out > /sys/class/remoteproc/remoteproc1/firmware");
+					} else if(currentColor.compare("blue") == 0) {
+						system("echo blue.out > /sys/class/remoteproc/remoteproc1/firmware");
+					} else {
+						system("echo green.out > /sys/class/remoteproc/remoteproc1/firmware");
+					}
 
-		if(saved.compare(currentColor) != 0) {
-			std::cout << "COLOR CHANGE to " << currentColor << endl;//code to change color
-			system("echo stop > /sys/class/remoteproc/remoteproc1/state");
-			if(currentColor.compare("red") == 0) {
-				system("echo red.out > /sys/class/remoteproc/remoteproc1/firmware");
-			} else if(currentColor.compare("blue") == 0) {
-				system("echo blue.out > /sys/class/remoteproc/remoteproc1/firmware");
-			} else {
-				system("echo yellow.out > /sys/class/remoteproc/remoteproc1/firmware");
-			}
-			system("echo start > /sys/class/remoteproc/remoteproc1/state");
-			sleep(5);
-        }else {
-			sleep(5);
+					system("echo start > /sys/class/remoteproc/remoteproc1/state");
+					sleep(3);
+				} else {
+					sleep(3);
+				}
+				saved = currentColor;
 		}
-		saved = currentColor;
 	}
 
 	
