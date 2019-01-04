@@ -33,7 +33,7 @@ main(int argc, char **argv)
 	std::string saved = "invalid";
 
 	for (;;) {
-		if(table.get()->GetBoolean("shutdown", true)) {
+		if(table.get()->GetBoolean("shutdown", false)) {
 			system("sudo poweroff");
 		} else {
 				std::string currentColor = table.get()->GetString("color entry", "invalid color");
