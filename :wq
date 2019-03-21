@@ -52,25 +52,15 @@ main(int argc, char **argv)
 
 				system("echo start > /sys/class/remoteproc/remoteproc1/state");
 				sleep(3);
-			} else if(table.get()->GetBoolean("robot/is-endgame", false)) {
+			} else {
 				system("echo stop > /sys/class/remoteproc/remoteproc1/state");
 				if(colour.compare("red") == 0 || colour.compare("blue") == 0) {
-					system("echo yellow.out > /sys/class/remoteproc/remoteproc1/firmware");
-					colour = "yellow";
+					system("echo white.out > /sys/class/remoteproc/remoteproc1/firmware");
+					colour = "white";
 				} else {
-					if(currentColor.compare("red") == 0) {
-						system("echo red.out > /sys/class/remoteproc/remoteproc1/firmware");
-						colour = "red";
-					} else {
-						system("echo blue.out > /sys/class/remoteproc/remoteproc1/firmware");
-						colour = "blue";
-					}
+					if(
 				}
-				std::cout << "COLOR CHANGE to " << colour << endl;
-				system("echo start > /sys/class/remoteproc/remoteproc1/state");
-				sleep(1);				
-			} else {
-				sleep(2);
+	
 			}
 				saved = currentColor;
 		}
