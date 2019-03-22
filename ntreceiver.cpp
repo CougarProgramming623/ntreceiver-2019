@@ -16,7 +16,7 @@ using namespace std;
 std::shared_ptr<nt::NetworkTable> start_networktables(void)
 {
 	auto inst = nt::NetworkTableInstance::GetDefault();
-	inst.StartClient("10.6.24.2");
+	inst.StartClient("10.6.23.2");
 	return inst.GetTable("cob");
 }
 
